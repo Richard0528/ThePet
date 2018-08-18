@@ -3,6 +3,8 @@ package www.petapp.com.thepet;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        loadFragment(new HomeFragment());
     }
 
     @Override
@@ -93,5 +96,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void loadFragment(Fragment fragment) {
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, fragment.getTag());
+        fragmentTransaction.commit();
+
     }
 }
