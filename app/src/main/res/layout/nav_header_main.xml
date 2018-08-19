@@ -12,7 +12,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/pet_image"
         android:layout_width="94dp"
         android:layout_height="90dp"
         android:layout_marginBottom="8dp"
@@ -33,7 +33,7 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_header_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/pet_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -44,6 +44,6 @@
         android:layout_marginStart="16dp"
         android:text="@string/nav_header_subtitle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView" />
+        app:layout_constraintStart_toEndOf="@+id/pet_image" />
 
 </android.support.constraint.ConstraintLayout>

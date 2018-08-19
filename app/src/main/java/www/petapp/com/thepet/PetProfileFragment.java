@@ -2,10 +2,16 @@ package www.petapp.com.thepet;
 
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+import www.petapp.com.thepet.model.ImageSliderAdapter;
 
 
 /**
@@ -13,7 +19,10 @@ import android.view.ViewGroup;
  */
 public class PetProfileFragment extends Fragment {
 
-
+    private ArrayList<Integer> mImages;
+    private ImageSliderAdapter mImageSliderAdapter;
+    private TabLayout mTabLayout;
+    private ViewPager mPager;
     public PetProfileFragment() {
         // Required empty public constructor
     }
@@ -23,7 +32,23 @@ public class PetProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pet_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_pet_profile, container, false);
+        ViewPager pager = view.findViewById(R.id.pet_profile_view_pager);
+        TabLayout tabLayout = view.findViewById(R.id.tab_dots);
+
+        setUpViewPager();
+        return view;
+    }
+
+    private void setUpViewPager() {
+        mImages.add(R.drawable.images_1);
+        mImages.add(R.drawable.images_2);
+        mImages.add(R.drawable.images_3);
+        mImages.add(R.drawable.images_4);
+        mImageSliderAdapter = new ImageSliderAdapter(getContext(), mImages);
+
+        mPager.setAdapter(mImageSliderAdapter);
+        mTabLayout.setupWithViewPager(mPager, true);
     }
 
 }
