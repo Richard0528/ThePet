@@ -33,22 +33,29 @@ public class PetProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pet_profile, container, false);
-        ViewPager pager = view.findViewById(R.id.pet_profile_view_pager);
-        TabLayout tabLayout = view.findViewById(R.id.tab_dots);
-
-        setUpViewPager();
+        mPager = view.findViewById(R.id.pet_profile_view_pager);
+        mTabLayout = view.findViewById(R.id.tab_dots);
         return view;
     }
 
-    private void setUpViewPager() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        setUpPetImage();
+    }
+
+    private void setUpPetImage() {
+        mImages = new ArrayList<>();
         mImages.add(R.drawable.images_1);
         mImages.add(R.drawable.images_2);
         mImages.add(R.drawable.images_3);
         mImages.add(R.drawable.images_4);
-        mImageSliderAdapter = new ImageSliderAdapter(getContext(), mImages);
 
+        mImageSliderAdapter = new ImageSliderAdapter(getContext(), mImages);
         mPager.setAdapter(mImageSliderAdapter);
-        mTabLayout.setupWithViewPager(mPager, true);
+//        mTabLayout.setupWithViewPager(mPager, true);
+
+
     }
 
 }
