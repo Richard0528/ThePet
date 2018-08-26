@@ -53,7 +53,7 @@ public class PetProfileFragment extends Fragment {
 
         mImageSliderAdapter = new ImageSliderAdapter(getContext(), mImages);
         mPager.setAdapter(mImageSliderAdapter);
-        mTabLayout.setupWithViewPager(mPager, true);
+//        mTabLayout.setupWithViewPager(mPager, true);
 
 
     }

@@ -1,10 +1,13 @@
 package www.petapp.com.thepet;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        SelectPhotoDialogFragment.OnPhotoSelectedListener,
+ListNewPetFragment.OnFragmentInteractionListener{
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +93,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_pet_profile) {
             loadFragment(new PetProfileFragment());
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_upload) {
+            loadFragment(new ListNewPetFragment());
         } else if (id == R.id.nav_slideshow) {
 
         }
@@ -98,11 +104,27 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
     private void loadFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getTag());
         fragmentTransaction.commit();
+
+    }
+
+    @Override
+    public void getImagePath(Uri imagePath) {
+
+    }
+
+    @Override
+    public void getImageBitmap(Bitmap bitmap) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }
