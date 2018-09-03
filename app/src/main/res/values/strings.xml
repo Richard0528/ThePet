@@ -21,4 +21,8 @@
     <string name="take_photo">take photo</string>
     <string name="select_photo">select photo</string>
 
+    <!--SelectPhotoDialogFragment-->
+    <string name="List_a_new_pet">List a new pet</string>
+
+
 </resources>
