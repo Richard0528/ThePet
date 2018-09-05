@@ -57,6 +57,7 @@ public class SelectPhotoDialogFragment extends DialogFragment {
             mOnPhotoSelectedListener.getImagePath(selectedImageUri);
             getDialog().dismiss();
 
+
         } else if (requestCode == TAKE_PHOTO_CODE && resultCode == Activity.RESULT_OK) {
             Log.d(TAG, "onActivityResult: done taking new photo" );
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
