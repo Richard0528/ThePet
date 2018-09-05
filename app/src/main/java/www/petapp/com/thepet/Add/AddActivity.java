@@ -31,5 +31,9 @@ public class AddActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setText("Media");
+        tabLayout.getTabAt(1).setText("Info");
+        tabLayout.getTabAt(2).setText("Checklists");
     }
 }
