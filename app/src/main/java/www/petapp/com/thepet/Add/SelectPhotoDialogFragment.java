@@ -1,4 +1,4 @@
-package www.petapp.com.thepet;
+package www.petapp.com.thepet.Add;
 
 import android.app.Activity;
 import android.content.Context;

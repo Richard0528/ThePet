@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_homefragment_tag">HomeFragmentTag</string>
+    <string name="key_listnewpetfragment_tag">ListNewPetFragmentTag</string>
+    <string name="key_petprofilefragment_tag">PetProfileFragmentTag</string>
+</resources>

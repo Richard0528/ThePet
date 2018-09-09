@@ -19,12 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import www.petapp.com.thepet.Add.AddActivity;
+import www.petapp.com.thepet.Add.SelectPhotoDialogFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        SelectPhotoDialogFragment.OnPhotoSelectedListener,
-ListNewPetFragment.OnFragmentInteractionListener{
-    private static final String TAG = "MainActivity";
+        SelectPhotoDialogFragment.OnPhotoSelectedListener {
+
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ ListNewPetFragment.OnFragmentInteractionListener{
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        loadFragment(new HomeFragment());
+        loadFragment(new HomeFragment(), getString(R.string.key_homefragment_tag));
     }
 
     @Override
@@ -94,11 +95,11 @@ ListNewPetFragment.OnFragmentInteractionListener{
         int id = item.getItemId();
 
         if (id == R.id.home) {
-            loadFragment(new HomeFragment());
+            loadFragment(new HomeFragment(), getString(R.string.key_homefragment_tag));
         } else if (id == R.id.nav_pet_profile) {
-            loadFragment(new PetProfileFragment());
+            loadFragment(new PetProfileFragment(), getString(R.string.key_petprofilefragment_tag));
         } else if (id == R.id.nav_upload) {
-            loadFragment(new ListNewPetFragment());
+//            loadFragment(new ListNewPetFragment(), getString(R.string.key_listnewpetfragment_tag));
         } else if (id == R.id.nav_slideshow) {
 
         }
@@ -109,12 +110,12 @@ ListNewPetFragment.OnFragmentInteractionListener{
     }
 
 
-    private void loadFragment(Fragment fragment) {
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, fragment.getTag());
+    private void loadFragment(Fragment fragment, String fragmentTag) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, fragmentTag)
+                .addToBackStack(fragmentTag);
         fragmentTransaction.commit();
-
     }
 
     @Override
@@ -124,11 +125,6 @@ ListNewPetFragment.OnFragmentInteractionListener{
 
     @Override
     public void getImageBitmap(Bitmap bitmap) {
-
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
     }
 }
