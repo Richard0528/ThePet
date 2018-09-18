@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.LoginActivity" />
+        <activity android:name=".login.RegistrationActivity" />
         <activity android:name=".Add.AddActivity"
             android:label="@string/List_a_new_pet"
             android:parentActivityName=".MainActivity"/>

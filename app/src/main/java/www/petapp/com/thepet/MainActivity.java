@@ -18,14 +18,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import www.petapp.com.thepet.Add.AddActivity;
 import www.petapp.com.thepet.Add.SelectPhotoDialogFragment;
+import www.petapp.com.thepet.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SelectPhotoDialogFragment.OnPhotoSelectedListener {
 
     private final String TAG = "MainActivity";
+
+    // for firebase
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +43,21 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Intent intent = new Intent(view.getContext(), AddActivity.class);
-                view.getContext().startActivity(intent);
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                if (user != null) {   // if the user is already login, prompt add activity
+                    Intent intent = new Intent(view.getContext(), AddActivity.class);
+                    view.getContext().startActivity(intent);
+                } else {   // else prompt login activity
+                    Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                    view.getContext().startActivity(intent);
+                }
+
             }
         });
 

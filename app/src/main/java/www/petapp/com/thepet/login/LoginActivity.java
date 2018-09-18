@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEmail;
     private EditText mPassword;
     private Button mLogin;
-//    private TextView mRegister;
+    private Button mRegister;
     private ProgressBar mProgressBar;
 
     @Override
@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.input_email);
         mPassword = findViewById(R.id.input_password);
         mLogin = findViewById(R.id.btn_login);
-//        mRegister = findViewById(R.id.link_register);
+        mRegister = findViewById(R.id.btn_register);
 
 
         initProgressBar();
@@ -92,16 +92,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        mRegister.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(TAG, "onClick: Navigating to Register Screen");
-//
-//                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-//
-//                startActivity(intent);
-//            }
-//        });
+        mRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Navigating to Register Screen");
+
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 
