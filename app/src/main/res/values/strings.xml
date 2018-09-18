@@ -24,6 +24,9 @@
     <!--SelectPhotoDialogFragment-->
     <string name="List_a_new_pet">List a new pet</string>
 
+    <!--Add-fragment_add_image-->
+    <string name="add_image_description">Add a new Pet Image</string>
+
     <!--Add-fragment_add_info-->
     <string name="breeder">Breeder</string>
     <string name="name">Name</string>
@@ -37,6 +40,7 @@
     <string name="vaccines">Vaccines Status</string>
     <string name="health">Health Status</string>
     <string name="train">Training Status</string>
+    <string name="health_status">Health Status</string>
     <string name="submit">Submit</string>
 
 </resources>

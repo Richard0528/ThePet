@@ -9,7 +9,8 @@ import android.view.View;
 import www.petapp.com.thepet.R;
 import www.petapp.com.thepet.model.SectionPageAdapter;
 
-public class AddActivity extends AppCompatActivity implements AddInfoFragment.OnButtonClickListener {
+public class AddActivity extends AppCompatActivity implements AddInfoFragment.OnButtonClickListener
+                                                        , AddImageFragment.OnButtonClickListener {
 
     private ViewPager viewPager;
 
@@ -17,6 +18,8 @@ public class AddActivity extends AppCompatActivity implements AddInfoFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        // remove elevation below the action bar
+        getSupportActionBar().setElevation(0);
 
         setupViewPager();
     }
@@ -49,7 +52,9 @@ public class AddActivity extends AppCompatActivity implements AddInfoFragment.On
             case R.id.Info_button:
                 viewPager.setCurrentItem(currPos+1);
                 break;
-
+            case R.id.Image_button:
+                viewPager.setCurrentItem(currPos+1);
+                break;
         }
     }
 }

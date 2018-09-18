@@ -96,12 +96,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.home) {
             loadFragment(new HomeFragment(), getString(R.string.key_homefragment_tag));
-        } else if (id == R.id.nav_pet_profile) {
-            loadFragment(new PetProfileFragment(), getString(R.string.key_petprofilefragment_tag));
-        } else if (id == R.id.nav_upload) {
+        } else if (id == R.id.nav_my_appointments) {
 //            loadFragment(new ListNewPetFragment(), getString(R.string.key_listnewpetfragment_tag));
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_my_pets) {
+            loadFragment(new PetProfileFragment(), getString(R.string.key_petprofilefragment_tag));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
