@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +117,8 @@ public class MainActivity extends AppCompatActivity
 //            loadFragment(new ListNewPetFragment(), getString(R.string.key_listnewpetfragment_tag));
         } else if (id == R.id.nav_my_pets) {
             loadFragment(new PetProfileFragment(), getString(R.string.key_petprofilefragment_tag));
+        } else if (id == R.id.logout) {
+            mAuth.signOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

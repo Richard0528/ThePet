@@ -95,7 +95,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                 if (checkInputs(email, name, password, mConfirmPassword.getText().toString())) {
-                    if(doStringsMatch(password, mConfirmPassword.getText().toString())){
+                    if(doStringsMatch(password, mConfirmPassword.getText().toString())) {
                         registerNewEmail(email, password);
                     }else{
                         Toast.makeText(mContext, "passwords do not match", Toast.LENGTH_SHORT).show();
@@ -239,7 +239,7 @@ public class RegistrationActivity extends AppCompatActivity {
         //nothing add to database
         Log.e(TAG, String.valueOf(reference.child(getString(R.string.node_users))));
 
-        mAuth.signOut();
+//        mAuth.signOut();
         redirectLoginScreen();
     }
 
@@ -249,21 +249,19 @@ public class RegistrationActivity extends AppCompatActivity {
     public void sendVerificationEmail() {
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if (user != null) {
-            user.sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(mContext, "Verification Email sent", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(mContext, "couldn't send email", Toast.LENGTH_SHORT).show();
+                    hideProgressBar();
+                }
+            }
+        });
 
-                            }
-                            else{
-                                Toast.makeText(mContext, "couldn't send email", Toast.LENGTH_SHORT).show();
-                                hideProgressBar();
-                            }
-                        }
-                    });
-        }
 
     }
 

@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         initProgressBar();
         setupFirebaseAuth();
         init();
+
     }
 
     private void init() {
@@ -93,14 +94,14 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: Navigating to Register Screen");
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "onClick: Navigating to Register Screen");
 
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
 
-                view.getContext().startActivity(intent);
-            }
+                    view.getContext().startActivity(intent);
+                }
         });
 
     }
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        finish();
 //                        finish();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("toOpen", "ProfileFragment");
+//                        intent.putExtra("toOpen", "ProfileFragment");
                         startActivity(intent);
 
 //                        ProfileFragment profileFragment = new ProfileFragment();
@@ -151,10 +152,6 @@ public class LoginActivity extends AppCompatActivity {
 //                                .replace(R.id.login_activity, profileFragment, profileFragment.getTag());
 ////                        fragmentTransaction.detach(profileFragment).attach(profileFragment).commit();
 //                        fragmentTransaction.commit();
-
-
-
-
 
 
                     }else{
