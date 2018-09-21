@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -21,13 +20,13 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
+
 import www.petapp.com.thepet.Add.AddActivity;
-import www.petapp.com.thepet.Add.SelectPhotoDialogFragment;
 import www.petapp.com.thepet.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        SelectPhotoDialogFragment.OnPhotoSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = "MainActivity";
 
@@ -135,13 +134,4 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void getImagePath(Uri imagePath) {
-
-    }
-
-    @Override
-    public void getImageBitmap(Bitmap bitmap) {
-
-    }
 }

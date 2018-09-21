@@ -1,18 +1,26 @@
 package www.petapp.com.thepet.Add;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import java.util.List;
 
 import www.petapp.com.thepet.R;
 import www.petapp.com.thepet.model.SectionPageAdapter;
 
-public class AddActivity extends AppCompatActivity implements AddInfoFragment.OnButtonClickListener
-                                                        , AddImageFragment.OnButtonClickListener {
+public class AddActivity extends AppCompatActivity implements
+        AddInfoFragment.OnButtonClickListener,
+        AddImageFragment.OnButtonClickListener {
 
     private ViewPager viewPager;
+    private String TAG = "AddActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,4 +65,15 @@ public class AddActivity extends AppCompatActivity implements AddInfoFragment.On
                 break;
         }
     }
+
+    /**
+     *
+     * @param uris the selected images' uris
+     */
+    @Override
+    public void getImgUris(List<Uri> uris) {
+        //ready to upload
+        Log.e(TAG, "the selected images size: " + uris.size());
+    }
+
 }

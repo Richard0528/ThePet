@@ -4,13 +4,14 @@ package www.petapp.com.thepet.Add;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -20,22 +21,38 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import www.petapp.com.thepet.MainActivity;
+import com.bumptech.glide.Glide;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.listener.OnCheckedListener;
+import com.zhihu.matisse.listener.OnSelectedListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import www.petapp.com.thepet.R;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddImageFragment extends Fragment implements SelectPhotoDialogFragment.OnPhotoSelectedListener {
+public class AddImageFragment extends Fragment  {
 
-    private ImageView mPetImg;
+    private List<ImageView> mPetImgs;
     private Button mNext;
-    private OnButtonClickListener mOnButtonClickListener;
+    private OnButtonClickListener mListener;
     private final String TAG = "AddImageFragment";
     private final int REQUEST_CODE = 231;
+    private Uri mFirstImgUri;
+    private ImageView mFirstPetImg;
+    private List<Uri> mImgUris;
 
-    interface OnButtonClickListener{
+    public interface OnButtonClickListener{
         void onButtonClicked(View view);
+        void getImgUris(List<Uri> uris);
     }
 
     public AddImageFragment() {
@@ -47,30 +64,34 @@ public class AddImageFragment extends Fragment implements SelectPhotoDialogFragm
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_add_image, container, false);
-        mPetImg = v.findViewById(R.id.list_pet_imgview_pet2);
+        mPetImgs = new ArrayList<>();
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet0));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet1));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet2));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet3));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet4));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet5));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet6));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet7));
+        mPetImgs.add(v.findViewById(R.id.add_img_imgview_pet8));
+        mFirstPetImg = v.findViewById(R.id.add_img_imgview_pet0);
+
+
 
         init(v);
         return v;
     }
 
     private void init(View v) {
-        mPetImg.setOnClickListener((view) -> {
-            Log.d(TAG, "pet image on click");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                verifyPermissions();
-            } else {
-                SelectPhotoDialogFragment fragment = new SelectPhotoDialogFragment();
-                fragment.show(getFragmentManager(), TAG);
-                fragment.setTargetFragment(AddImageFragment.this,1 );
-            }
-
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            verifyPermissions();
+        }
 
         mNext = v.findViewById(R.id.Image_button);
         mNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnButtonClickListener.onButtonClicked(v);
+                mListener.onButtonClicked(v);
             }
         });
     }
@@ -83,26 +104,71 @@ public class AddImageFragment extends Fragment implements SelectPhotoDialogFragm
                 ContextCompat.checkSelfPermission(getContext(), permissions[1]) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getContext(), permissions[2]) == PackageManager.PERMISSION_GRANTED) {
 
-            SelectPhotoDialogFragment fragment = new SelectPhotoDialogFragment();
-            fragment.show(getFragmentManager(), TAG);
-            fragment.setTargetFragment(AddImageFragment.this,1 );
+            selectImgFromGallery();
+
         } else {
             requestPermissions(permissions, REQUEST_CODE);
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    private void selectImgFromGallery() {
+        mFirstPetImg.setOnClickListener((view) -> {
+            Log.d(TAG, "pet image on click");
+            Matisse.from(this)
+                    .choose(MimeType.ofAll(), false)
+                    .countable(true)
+                    .capture(true)
+                    .captureStrategy(
+                            new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
+                    .maxSelectable(9)
+                    .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                    .gridExpectedSize(
+                            getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                    .thumbnailScale(0.85f)
+//                                            .imageEngine(new GlideEngine())  // for glide-V3
+                    .imageEngine(new Glide4Engine())    // for glide-V4
+                    .setOnSelectedListener(new OnSelectedListener() {
+                        @Override
+                        public void onSelected(
+                                @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
+                            // DO SOMETHING IMMEDIATELY HERE
+                            Log.e("onSelected", "onSelected: pathList=" + pathList);
 
+                        }
+                    })
+                    .originalEnable(true)
+                    .maxOriginalSize(10)
+                    .setOnCheckedListener(new OnCheckedListener() {
+                        @Override
+                        public void onCheck(boolean isChecked) {
+                            // DO SOMETHING IMMEDIATELY HERE
+                            Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+                        }
+                    })
+                    .forResult(REQUEST_CODE);
+
+        });
     }
 
     @Override
-    public void getImagePath(Uri imagePath) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            Log.e(TAG, "get img uris from activity");
+            mImgUris = Matisse.obtainResult(data);
+            mListener.getImgUris(mImgUris);
+            Glide4Engine glide = new Glide4Engine();
+            //set pet images
+            for (int i = 0; i < mImgUris.size(); i++) {
+                glide.loadGifThumbnail(getContext(), 150, getResources().getDrawable(R.drawable.ic_menu_gallery),
+                        mPetImgs.get(i), mImgUris.get(i));
+                Log.e(TAG, "pet image uri: " + mImgUris.get(i));
+            }
 
-    }
-
-    @Override
-    public void getImageBitmap(Bitmap bitmap) {
+        } else {
+            Log.e(TAG, "fail to get img uris from activity");
+        }
 
     }
 
@@ -110,7 +176,7 @@ public class AddImageFragment extends Fragment implements SelectPhotoDialogFragm
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mOnButtonClickListener = (OnButtonClickListener) context;
+            mListener = (OnButtonClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(((Activity) context).getLocalClassName()
                     + " must implement OnButtonClickListener");
