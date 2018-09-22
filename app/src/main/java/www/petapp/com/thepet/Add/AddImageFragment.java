@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.filter.Filter;
@@ -161,7 +159,7 @@ public class AddImageFragment extends Fragment  {
             Glide4Engine glide = new Glide4Engine();
             //set pet images
             for (int i = 0; i < mImgUris.size(); i++) {
-                glide.loadGifThumbnail(getContext(), 150, getResources().getDrawable(R.drawable.ic_menu_gallery),
+                glide.loadGifThumbnail(getContext(), 150, ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_camera),
                         mPetImgs.get(i), mImgUris.get(i));
                 Log.e(TAG, "pet image uri: " + mImgUris.get(i));
             }

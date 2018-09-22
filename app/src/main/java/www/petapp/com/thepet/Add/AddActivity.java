@@ -74,6 +74,7 @@ public class AddActivity extends AppCompatActivity implements
     public void getImgUris(List<Uri> uris) {
         //ready to upload
         Log.e(TAG, "the selected images size: " + uris.size());
+        //compress to small size before upload
     }
 
 }
