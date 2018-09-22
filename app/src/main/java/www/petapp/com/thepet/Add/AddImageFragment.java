@@ -86,9 +86,9 @@ public class AddImageFragment extends Fragment  {
     }
 
     private void init(View v) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            verifyPermissions();
-        }
+
+        verifyPermissions();
+
 
         mBtnNext = v.findViewById(R.id.Image_button);
         mBtnNext.setOnClickListener(new View.OnClickListener() {
