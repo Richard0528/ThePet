@@ -67,7 +67,22 @@ public class AddActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Get pet information from AddInfoFragment.
+     * @param breeder
+     * @param name
+     * @param age
+     * @param size
+     * @param weight
+     * @param description
+     */
+    @Override
+    public void getPetInfo(String breeder, String name, String age, String size, String weight, String description) {
+        Log.e(TAG, "Pet information: " + breeder + ", " + name + ", " + age + ", " +
+        size + ", " + weight + ", " + description);
+    }
+
+    /**
+     * Get pet images' uris from AddImageFragment
      * @param uris the selected images' uris
      */
     @Override

@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:id="@+id/Info_breeder"
+            android:id="@+id/add_Info_breeder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/Info_name"
+            android:id="@+id/add_Info_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -37,24 +37,24 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Info_breeder" />
+            app:layout_constraintTop_toBottomOf="@+id/add_Info_breeder" />
 
         <EditText
-            android:id="@+id/Info_birthday"
+            android:id="@+id/add_Info_age"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:hint="@string/birthday"
+            android:hint="@string/age"
             android:inputType="text"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Info_name" />
+            app:layout_constraintTop_toBottomOf="@+id/add_Info_name" />
 
         <EditText
-            android:id="@+id/Info_size"
+            android:id="@+id/add_Info_size"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -63,12 +63,12 @@
             android:hint="@string/size"
             android:inputType="number|numberDecimal"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/Info_weight"
+            app:layout_constraintEnd_toStartOf="@+id/add_Info_weight"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Info_birthday" />
+            app:layout_constraintTop_toBottomOf="@+id/add_Info_age" />
 
         <EditText
-            android:id="@+id/Info_weight"
+            android:id="@+id/add_Info_weight"
             android:layout_width="165dp"
             android:layout_height="0dp"
             android:layout_marginEnd="16dp"
@@ -77,12 +77,13 @@
             android:inputType="number|numberDecimal"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Info_birthday" />
+            app:layout_constraintTop_toBottomOf="@+id/add_Info_age" />
 
         <EditText
-            android:id="@+id/Info_description"
+            android:id="@+id/add_Info_description"
             android:layout_width="0dp"
-            android:layout_height="204dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
@@ -90,9 +91,10 @@
             android:hint="@string/description"
             android:inputType="textMultiLine"
             android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/Info_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Info_size" />
+            app:layout_constraintTop_toBottomOf="@+id/add_Info_size" />
 
         <Button
             android:id="@+id/Info_button"
@@ -106,6 +108,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

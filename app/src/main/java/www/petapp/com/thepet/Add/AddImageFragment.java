@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -40,11 +41,10 @@ import static android.app.Activity.RESULT_OK;
 public class AddImageFragment extends Fragment  {
 
     private List<ImageView> mPetImgs;
-    private Button mNext;
+    private Button mBtnNext;
     private OnButtonClickListener mListener;
     private final String TAG = "AddImageFragment";
     private final int REQUEST_CODE = 231;
-    private Uri mFirstImgUri;
     private ImageView mFirstPetImg;
     private List<Uri> mImgUris;
 
@@ -55,6 +55,11 @@ public class AddImageFragment extends Fragment  {
 
     public AddImageFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -85,8 +90,8 @@ public class AddImageFragment extends Fragment  {
             verifyPermissions();
         }
 
-        mNext = v.findViewById(R.id.Image_button);
-        mNext.setOnClickListener(new View.OnClickListener() {
+        mBtnNext = v.findViewById(R.id.Image_button);
+        mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onButtonClicked(v);
