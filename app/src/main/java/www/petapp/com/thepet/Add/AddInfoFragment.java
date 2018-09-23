@@ -30,13 +30,11 @@ public class AddInfoFragment extends Fragment {
     private String INVALID_INPUT = "Please provide required information about your pet.";
     private String EMPTY_INPUT = "Empty Input";
 
-
-
     private OnButtonClickListener mListener;
 
     public interface OnButtonClickListener{
         void onButtonClicked(View view);
-        void getPetInfo(String breeder, String name, String age, String size, String weight,
+        void getPetInfo(String breeder, String name, int ageR, double sizeR, double weightR,
                         String description);
     }
 
@@ -93,9 +91,14 @@ public class AddInfoFragment extends Fragment {
                     result = false;
                 }
 
+                // convert to its real data type
+                int ageR = Integer.parseInt(age);
+                double sizeR = Double.parseDouble(size);
+                double weightR = Double.parseDouble(weight);
+
                 if (result) {
                     mListener.onButtonClicked(v);
-                    mListener.getPetInfo(breeder, name, age, size, weight, description);
+                    mListener.getPetInfo(breeder, name, ageR, sizeR, weightR, description);
 
                 }
 

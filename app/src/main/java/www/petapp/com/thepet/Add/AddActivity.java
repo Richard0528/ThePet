@@ -1,26 +1,61 @@
 package www.petapp.com.thepet.Add;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
+import www.petapp.com.thepet.MainActivity;
 import www.petapp.com.thepet.R;
+import www.petapp.com.thepet.login.LoginActivity;
+import www.petapp.com.thepet.model.Photo;
 import www.petapp.com.thepet.model.SectionPageAdapter;
 
 public class AddActivity extends AppCompatActivity implements
         AddInfoFragment.OnButtonClickListener,
-        AddImageFragment.OnButtonClickListener {
+        AddImageFragment.OnButtonClickListener,
+        AddCheckListFragment.OnButtonClickListener {
 
     private ViewPager viewPager;
     private String TAG = "AddActivity";
+
+    // firebase fields
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference myRef;
+    private Photo mPhoto;
+
+    // data from AddInfoFragment
+    private String db_breeder;
+    private String db_name;
+    private int db_age;
+    private double db_size;
+    private double db_weight;
+    private String db_description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +64,56 @@ public class AddActivity extends AppCompatActivity implements
         // remove elevation below the action bar
         getSupportActionBar().setElevation(0);
 
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        mPhoto = new Photo();
+
+        setupFirebaseAuth();
         setupViewPager();
+    }
+
+    /*
+        ----------------------------- Firebase setup ---------------------------------
+     */
+    private void setupFirebaseAuth() {
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                //check if email is verified
+                if(user.isEmailVerified()){
+                    Log.d(TAG, "onAuthStateChanged: signed_in: " + user.getUid());
+                    Toast.makeText(AddActivity.this, "Signed in with" + user.getEmail(), Toast.LENGTH_SHORT).show();
+
+
+                }else{
+                    Toast.makeText(AddActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+                    FirebaseAuth.getInstance().signOut();
+                }
+                // ...
+            }
+        };
+
+        // this will get called as soon as this activity started, every changes, automatically
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
     }
 
     /**
@@ -63,7 +147,51 @@ public class AddActivity extends AppCompatActivity implements
             case R.id.Image_button:
                 viewPager.setCurrentItem(currPos+1);
                 break;
+            case R.id.btn_submit:
+                uploadImageData();
+                break;
         }
+    }
+
+    private String getTimestamp(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.CANADA);
+        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
+        return sdf.format(new Date());
+    }
+    // gather data from all three fragments and upload to firebase
+    // part 1) all the data will be related to the image, add new photo node
+    // part 2) add image URL to User
+    private void uploadImageData() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getUid();
+        String newPhotoKey = myRef.child(AddActivity.this.getString(R.string.node_photos)).push().getKey();
+
+        // create photo node
+        mPhoto.setUserID(userId);
+        mPhoto.setBreeder(db_breeder);
+        mPhoto.setName(db_name);
+        mPhoto.setAge(db_age);
+        mPhoto.setSize(db_size);
+        mPhoto.setWeight(db_weight);
+        mPhoto.setDescription(db_description);
+        mPhoto.setDate_created(getTimestamp());
+
+        myRef.child(getString(R.string.node_photos))
+                .child(newPhotoKey)
+                .setValue(mPhoto);
+
+
+    }
+
+    /**
+     * Get pet images' uris from AddImageFragment
+     * @param uris the selected images' uris
+     */
+    @Override
+    public void getImgUris(List<Uri> uris) {
+        //ready to upload
+        Log.e(TAG, "the selected images size: " + uris.size());
+        //compress to small size before upload
     }
 
     /**
@@ -76,20 +204,37 @@ public class AddActivity extends AppCompatActivity implements
      * @param description
      */
     @Override
-    public void getPetInfo(String breeder, String name, String age, String size, String weight, String description) {
+    public void getPetInfo(String breeder, String name, int age, double size, double weight, String description) {
         Log.e(TAG, "Pet information: " + breeder + ", " + name + ", " + age + ", " +
-        size + ", " + weight + ", " + description);
+                size + ", " + weight + ", " + description);
+        db_breeder = breeder;
+        db_name = name;
+        db_age = age;
+        db_size = size;
+        db_weight = weight;
+        db_description = description;
     }
 
-    /**
-     * Get pet images' uris from AddImageFragment
-     * @param uris the selected images' uris
-     */
     @Override
-    public void getImgUris(List<Uri> uris) {
-        //ready to upload
-        Log.e(TAG, "the selected images size: " + uris.size());
-        //compress to small size before upload
+    public void getPetCheckLists() {
+
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
 }

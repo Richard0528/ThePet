@@ -220,7 +220,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * Adds data to the node: "users"
      */
-    public void addNewUser(){
+    public void addNewUser() {
 
         //add data to the "users" node
         String userid = mAuth.getCurrentUser().getUid();
