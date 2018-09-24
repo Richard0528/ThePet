@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,10 +46,12 @@ public class AddImageFragment extends Fragment  {
     private final int REQUEST_CODE = 231;
     private ImageView mFirstPetImg;
     private List<Uri> mImgUris;
+    private List<String> mImgPaths;
 
     public interface OnButtonClickListener{
         void onButtonClicked(View view);
-        void getImgUris(List<Uri> uris);
+        void getImgUris(List<Uri> imgUris);
+        void getImgPaths(List<String> imgPaths);
     }
 
     public AddImageFragment() {
@@ -137,6 +138,7 @@ public class AddImageFragment extends Fragment  {
                                 @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
                             // DO SOMETHING IMMEDIATELY HERE
                             Log.e("onSelected", "onSelected: pathList=" + pathList);
+                            mListener.getImgPaths(pathList);
 
                         }
                     })
@@ -160,11 +162,11 @@ public class AddImageFragment extends Fragment  {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Log.e(TAG, "get img uris from activity");
             mImgUris = Matisse.obtainResult(data);
-            mListener.getImgUris(mImgUris);
+
             Glide4Engine glide = new Glide4Engine();
             //set pet images
             for (int i = 0; i < mImgUris.size(); i++) {
-                glide.loadGifThumbnail(getContext(), 640, ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_camera),
+                glide.loadGifThumbnail(getContext(), 150, ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_camera),
                         mPetImgs.get(i), mImgUris.get(i));
                 Log.e(TAG, "pet image uri: " + mImgUris.get(i));
             }
@@ -184,5 +186,11 @@ public class AddImageFragment extends Fragment  {
             throw new ClassCastException(((Activity) context).getLocalClassName()
                     + " must implement OnButtonClickListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 }

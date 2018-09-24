@@ -1,13 +1,10 @@
 package www.petapp.com.thepet.Add;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,15 +27,16 @@ import java.util.TimeZone;
 
 import www.petapp.com.thepet.MainActivity;
 import www.petapp.com.thepet.R;
-import www.petapp.com.thepet.login.LoginActivity;
 import www.petapp.com.thepet.model.CustomViewPager;
 import www.petapp.com.thepet.model.Photo;
 import www.petapp.com.thepet.model.SectionPageAdapter;
+import www.petapp.com.thepet.util.CompressImageAsyncTask;
 
 public class AddActivity extends AppCompatActivity implements
         AddInfoFragment.OnButtonClickListener,
         AddImageFragment.OnButtonClickListener,
-        AddCheckListFragment.OnButtonClickListener {
+        AddCheckListFragment.OnButtonClickListener,
+        CompressImageAsyncTask.OnCompressImagePostExecuteDelegate{
 
     private CustomViewPager viewPager;
     private String TAG = "AddActivity";
@@ -189,13 +187,23 @@ public class AddActivity extends AppCompatActivity implements
 
     /**
      * Get pet images' uris from AddImageFragment
-     * @param uris the selected images' uris
+     * @param imgUris the selected images' uris
      */
     @Override
-    public void getImgUris(List<Uri> uris) {
+    public void getImgUris(List<Uri> imgUris) {
         //ready to upload
-        Log.e(TAG, "the selected images size: " + uris.size());
-        //compress to small size before upload
+        Log.e(TAG, "the selected images size: " + imgUris.size());
+
+        
+
+    }
+
+    @Override
+    public void getImgPaths(List<String> imgPaths) {
+        for (String s : imgPaths) {
+            Log.e(TAG, "getImgPaths: " + s);
+        }
+        //need to get compressed img from async task
     }
 
     /**
@@ -241,4 +249,9 @@ public class AddActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void getCompressedBitmap(List<Bitmap> bitmaps) {
+        //compresed bitmaps
+        Log.e(TAG, "first img after decode: " + bitmaps.get(0).getByteCount());
+    }
 }

@@ -1,26 +1,30 @@
 package www.petapp.com.thepet.util;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompressImageAsyncTask extends AsyncTask<Void, Void, List<Bitmap>> {
-    private List<Uri> mImgUris;
+    private List<String> mImgPaths;
     private final String TAG = "CompressImageAsyncTask";
     private List<Bitmap> mBitmaps;
     private int mReqWidth;
     private int mReqHeight;
+    private OnCompressImagePostExecuteDelegate mListener;
 
-    public CompressImageAsyncTask(List<Uri> uris, int reqWidth, int reqHeight) {
-        mImgUris = uris;
+    public interface OnCompressImagePostExecuteDelegate {
+        void getCompressedBitmap(List<Bitmap> bitmaps);
+    }
+
+    public CompressImageAsyncTask(OnCompressImagePostExecuteDelegate listener, List<String> paths, int reqWidth, int reqHeight) {
+        mImgPaths = paths;
         mBitmaps = new ArrayList<>();
         mReqWidth = reqWidth;
         mReqHeight = reqHeight;
+        mListener = listener;
     }
 
     @Override
@@ -31,10 +35,11 @@ public class CompressImageAsyncTask extends AsyncTask<Void, Void, List<Bitmap>> 
 
     @Override
     protected List<Bitmap> doInBackground(Void... voids) {
-        Log.d(TAG, "doInBackground: started.");
+        Log.e(TAG, "doInBackground: started.");
 
-        for (int i = 0; i < mImgUris.size(); i++) {
-            Bitmap bitmap = decodeImageFromPath(mImgUris.get(i).toString(), mReqWidth, mReqHeight);
+        for (int i = 0; i < mImgPaths.size(); i++) {
+            Bitmap bitmap = decodeImageFromPath(mImgPaths.get(i).toString(), mReqWidth, mReqHeight);
+
             mBitmaps.add(bitmap);
         }
         return mBitmaps;
@@ -66,11 +71,14 @@ public class CompressImageAsyncTask extends AsyncTask<Void, Void, List<Bitmap>> 
 
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(imgPath, reqWidth, reqHeight);
+        Log.e(TAG, "decodeImageFromPath inSampleSize: " + options.inSampleSize);
         return BitmapFactory.decodeFile(imgPath);
     }
 
     @Override
     protected void onPostExecute(List<Bitmap> bitmaps) {
         super.onPostExecute(bitmaps);
+        mListener.getCompressedBitmap(bitmaps);
     }
+
 }
