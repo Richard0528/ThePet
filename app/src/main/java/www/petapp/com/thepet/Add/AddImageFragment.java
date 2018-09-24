@@ -164,7 +164,7 @@ public class AddImageFragment extends Fragment  {
             Glide4Engine glide = new Glide4Engine();
             //set pet images
             for (int i = 0; i < mImgUris.size(); i++) {
-                glide.loadGifThumbnail(getContext(), 150, ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_camera),
+                glide.loadGifThumbnail(getContext(), 640, ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_camera),
                         mPetImgs.get(i), mImgUris.get(i));
                 Log.e(TAG, "pet image uri: " + mImgUris.get(i));
             }

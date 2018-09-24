@@ -67,7 +67,6 @@ public class AddInfoFragment extends Fragment {
         mNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 boolean result = true;
                 String breeder = mBreeder.getText().toString();
                 String name = mName.getText().toString();
