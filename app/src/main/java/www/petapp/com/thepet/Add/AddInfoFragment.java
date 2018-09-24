@@ -6,9 +6,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -19,7 +22,7 @@ import www.petapp.com.thepet.R;
  */
 public class AddInfoFragment extends Fragment {
 
-    private EditText mBreeder;
+    private AutoCompleteTextView mBreeder;
     private EditText mName;
     private EditText mAge;
     private EditText mSize;
@@ -54,7 +57,26 @@ public class AddInfoFragment extends Fragment {
     }
 
     private void init(View v) {
+
+        String[] breeds = {"Shiba Inu", "German Shepherd", "Labrador Retriever", "Bulldog", "Beagle",
+                    "Poodle", "Pug", "Boxer", "Golden Retriever", "Chihuahua", "Siberian Husky", "English Mastiff",
+                    "Yorkshire Terrier", "Rottweiler", "Dobermann", "French Bulldog", "Dachshund", "Chow Chow",
+                    "Maltese dog", "Staffordshire Bull Terrier", "Great Dane", "Akita Inu", "Border Collie",
+                    "Pomeranian", "shih Tzu", "Pointer", "American Staffordshire Terrier", "Old English Sheepdog",
+                    "English Cocker Spaniel", "Australian Shepherd", "Alaskan Malamute", "Bull Terrier",
+                    "Pembroke Welsh Corgi", "Greyhound", "Newfoundland dog", "Jack Russel Terrier", "Dalmatian dog",
+                    "German Shorthaired Pointer", "Boston Terrier", "Cavalier King Charles Spaniel",
+                    "Australian Cattle Dog", "American Eskimo Dog", "Basset Hound", "Airedale Terrier", "Bernese Mountain Dog",
+                    "Rough Collie", "Bichon Frise", "Affenpinscher", "Borzoi", "Anatolian Shepherb",
+                    "King Charles Spaniel", "Shar Pei"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, breeds);
+
+        // set up for AutoCompleteTextView
         mBreeder = v.findViewById(R.id.add_Info_breeder);
+        mBreeder.setThreshold(1);
+        mBreeder.setAdapter(adapter);
+
         mName = v.findViewById(R.id.add_Info_name);
         mAge = v.findViewById(R.id.add_Info_age);
         mSize = v.findViewById(R.id.add_Info_size);
@@ -68,6 +90,7 @@ public class AddInfoFragment extends Fragment {
 
                 boolean result = true;
                 String breeder = mBreeder.getText().toString();
+                Log.d(getTag(), "Breeder is " + breeder);
                 String name = mName.getText().toString();
                 String age = mAge.getText().toString();
                 String size = mSize.getText().toString();

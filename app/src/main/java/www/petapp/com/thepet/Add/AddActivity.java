@@ -31,6 +31,7 @@ import java.util.TimeZone;
 import www.petapp.com.thepet.MainActivity;
 import www.petapp.com.thepet.R;
 import www.petapp.com.thepet.login.LoginActivity;
+import www.petapp.com.thepet.model.CustomViewPager;
 import www.petapp.com.thepet.model.Photo;
 import www.petapp.com.thepet.model.SectionPageAdapter;
 
@@ -39,7 +40,7 @@ public class AddActivity extends AppCompatActivity implements
         AddImageFragment.OnButtonClickListener,
         AddCheckListFragment.OnButtonClickListener {
 
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private String TAG = "AddActivity";
 
     // firebase fields
@@ -124,7 +125,8 @@ public class AddActivity extends AppCompatActivity implements
         adapter.addFragment(new AddImageFragment());
         adapter.addFragment(new AddInfoFragment());
         adapter.addFragment(new AddCheckListFragment());
-        viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager = findViewById(R.id.container);
+        viewPager.setPagingEnabled(false);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -149,6 +151,8 @@ public class AddActivity extends AppCompatActivity implements
                 break;
             case R.id.btn_submit:
                 uploadImageData();
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                view.getContext().startActivity(intent);
                 break;
         }
     }
