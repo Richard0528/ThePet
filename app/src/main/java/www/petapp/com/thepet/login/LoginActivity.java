@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
     /*
         ----------------------------- Firebase setup ---------------------------------
      */
-    private void setupFirebaseAuth(){
+    private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: started");
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
