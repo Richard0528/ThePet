@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +20,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -183,32 +189,59 @@ public class AddActivity extends AppCompatActivity implements
                 .child(newPhotoKey)
                 .setValue(mPhoto);
 
+        //upload pet images to fire storage
+
+        for (int i = 0; i < mCompressedBitmaps.size(); i++) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                    .child(getString(R.string.node_images) + "/" + getString(R.string.node_users) +
+                            "/" + userId + "/" + getString(R.string.node_pet) + "/picture" + i);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            mCompressedBitmaps.get(i).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            UploadTask uploadTask = storageReference.putBytes(stream.toByteArray());
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getApplicationContext(), "Post Success", Toast.LENGTH_SHORT).show();
+
+                    //insert the download url into the firebase database
+                    Uri firebaseUri = taskSnapshot.getDownloadUrl();
+
+                    Log.d(TAG, "onSuccess: firebase download url: " + firebaseUri.toString());
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                    //need to insert images url to database
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "could not upload photo", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
 
     }
 
-    /**
-     * Get pet images' uris from AddImageFragment
-     * @param imgUris the selected images' uris
-     */
-    @Override
-    public void getImgUris(List<Uri> imgUris) {
-        //ready to upload
-        Log.e(TAG, "the selected images size: " + imgUris.size());
-
-        
-
+    private int getImageCount(DataSnapshot dataSnapshot){
+        int count = 0;
+        for(DataSnapshot ds: dataSnapshot
+                .child(getString(R.string.node_images) + "/" + getString(R.string.node_users))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .getChildren()){
+            count++;
+        }
+        return count;
     }
 
     @Override
     public void getImgPaths(List<String> imgPaths) {
-
+        // compress images to the given width and height
         new CompressImageAsyncTask(new CompressImageAsyncTask.OnCompressImagePostExecuteDelegate() {
             @Override
             public void getCompressedBitmap(List<Bitmap> bitmaps) {
-                Log.e(TAG, "getCompressedBitmap size: " + bitmaps.get(0).getByteCount() );
                 mCompressedBitmaps = bitmaps;
             }
-        }, imgPaths, 640, 480).execute();
+        }, imgPaths, 640, 320).execute();
 
     }
 

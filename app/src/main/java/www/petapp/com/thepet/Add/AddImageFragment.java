@@ -50,7 +50,6 @@ public class AddImageFragment extends Fragment  {
 
     public interface OnButtonClickListener{
         void onButtonClicked(View view);
-        void getImgUris(List<Uri> imgUris);
         void getImgPaths(List<String> imgPaths);
     }
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CompressImageAsyncTask extends AsyncTask<Void, Void, List<Bitmap>> {
     private List<String> mImgPaths;
     private final String TAG = "CompressImageAsyncTask";
@@ -39,7 +40,6 @@ public class CompressImageAsyncTask extends AsyncTask<Void, Void, List<Bitmap>> 
 
         for (int i = 0; i < mImgPaths.size(); i++) {
             Bitmap bitmap = decodeImageFromPath(mImgPaths.get(i).toString(), mReqWidth, mReqHeight);
-
             mBitmaps.add(bitmap);
         }
         return mBitmaps;
@@ -72,7 +72,7 @@ public class CompressImageAsyncTask extends AsyncTask<Void, Void, List<Bitmap>> 
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(imgPath, reqWidth, reqHeight);
         Log.e(TAG, "decodeImageFromPath inSampleSize: " + options.inSampleSize);
-        return BitmapFactory.decodeFile(imgPath);
+        return BitmapFactory.decodeFile(imgPath, options);
     }
 
     @Override
