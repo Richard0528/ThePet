@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -196,9 +197,13 @@ public class AddActivity extends AppCompatActivity implements
                     .child(getString(R.string.node_images) + "/" + getString(R.string.node_users) +
                             "/" + userId + "/" + getString(R.string.node_pet) + "/picture" + i);
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            mCompressedBitmaps.get(i).compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            UploadTask uploadTask = storageReference.putBytes(stream.toByteArray());
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            mCompressedBitmaps.get(i).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            Bitmap tempBitMap = mCompressedBitmaps.get(i);
+            int bytes = tempBitMap.getByteCount();
+            ByteBuffer buffer = ByteBuffer.allocate(bytes);
+            tempBitMap.copyPixelsToBuffer(buffer);
+            UploadTask uploadTask = storageReference.putBytes(buffer.array());
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
