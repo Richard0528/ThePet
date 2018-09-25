@@ -209,7 +209,7 @@ public class AddActivity extends AppCompatActivity implements
 
                     Log.d(TAG, "onSuccess: firebase download url: " + firebaseUri.toString());
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                    //need to insert images url to database
+                    //need to insert images url to database and fix rotation
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
