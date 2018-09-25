@@ -90,7 +90,6 @@ public class AddImageFragment extends Fragment  {
 
         verifyPermissions();
 
-
         mBtnNext = v.findViewById(R.id.Image_button);
         mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +120,7 @@ public class AddImageFragment extends Fragment  {
             Matisse.from(this)
                     .choose(MimeType.ofAll(), false)
                     .countable(true)
-                    .capture(true)
+                    .capture(false)
                     .captureStrategy(
                             new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                     .maxSelectable(9)
@@ -138,7 +137,7 @@ public class AddImageFragment extends Fragment  {
                                 @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
                             // DO SOMETHING IMMEDIATELY HERE
                             Log.e("onSelected", "onSelected: pathList=" + pathList);
-                            mListener.getImgPaths(pathList);
+                            mImgPaths = pathList;
 
                         }
                     })
@@ -170,6 +169,7 @@ public class AddImageFragment extends Fragment  {
                         mPetImgs.get(i), mImgUris.get(i));
                 Log.e(TAG, "pet image uri: " + mImgUris.get(i));
             }
+            mListener.getImgPaths(mImgPaths);
 
         } else {
             Log.e(TAG, "fail to get img uris from activity");

@@ -35,8 +35,7 @@ import www.petapp.com.thepet.util.CompressImageAsyncTask;
 public class AddActivity extends AppCompatActivity implements
         AddInfoFragment.OnButtonClickListener,
         AddImageFragment.OnButtonClickListener,
-        AddCheckListFragment.OnButtonClickListener,
-        CompressImageAsyncTask.OnCompressImagePostExecuteDelegate{
+        AddCheckListFragment.OnButtonClickListener{
 
     private CustomViewPager viewPager;
     private String TAG = "AddActivity";
@@ -55,6 +54,8 @@ public class AddActivity extends AppCompatActivity implements
     private double db_size;
     private double db_weight;
     private String db_description;
+
+    private List<Bitmap> mCompressedBitmaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,10 +201,15 @@ public class AddActivity extends AppCompatActivity implements
 
     @Override
     public void getImgPaths(List<String> imgPaths) {
-        for (String s : imgPaths) {
-            Log.e(TAG, "getImgPaths: " + s);
-        }
-        //need to get compressed img from async task
+
+        new CompressImageAsyncTask(new CompressImageAsyncTask.OnCompressImagePostExecuteDelegate() {
+            @Override
+            public void getCompressedBitmap(List<Bitmap> bitmaps) {
+                Log.e(TAG, "getCompressedBitmap size: " + bitmaps.get(0).getByteCount() );
+                mCompressedBitmaps = bitmaps;
+            }
+        }, imgPaths, 640, 480).execute();
+
     }
 
     /**
@@ -249,9 +255,4 @@ public class AddActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void getCompressedBitmap(List<Bitmap> bitmaps) {
-        //compresed bitmaps
-        Log.e(TAG, "first img after decode: " + bitmaps.get(0).getByteCount());
-    }
 }
